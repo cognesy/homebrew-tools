@@ -10,10 +10,12 @@ class YamlSchema < Formula
   def install
     system "cargo", "install", *std_cargo_args(path: ".")
     (bin / "ys").rename(bin / "yaml-schema-validator")
+    bin.install_symlink "yaml-schema-validator" => "ysv"
   end
 
   test do
     assert_match "0.9.1", shell_output("#{bin}/yaml-schema-validator version")
+    assert_match "0.9.1", shell_output("#{bin}/ysv version")
 
     (testpath / "schema.yaml").write <<~YAML
       type: object
